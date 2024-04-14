@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
+  backend:
+    build:
+      context: ./backend
+      args:
+        SECRET_KEY_BASE: ${SECRET_KEY}
+    volumes:
+      - ./backend:/rails
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://postgres:${DATABASE_PASSWORD}@db:5432/backend_development"
+      SECRET_KEY_BASE: ${SECRET_KEY}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    command: ["./entrypoint.sh"]
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "8080:8080"
