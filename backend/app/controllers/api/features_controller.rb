@@ -21,6 +21,7 @@ module Api
     end
 
     # POST /api/features/:feature_id/comments
+    skip_before_action :verify_authenticity_token, only: [:create_comment]
     def create_comment
       feature = Feature.find(params[:feature_id])
       comment = feature.comments.build(comment_params)
@@ -35,7 +36,7 @@ module Api
     private
 
     def comment_params
-      params.require(:comment).permit(:body)
+      params.require(:comment).permit(:body, :name)
     end
   end
 end

@@ -21,13 +21,18 @@
               :key="comment.id"
               class="bg-gray-100 p-2 mb-2"
             >
-              {{ comment.body }}
+              <strong>{{ comment.name }}</strong
+              >: {{ comment.body }}
             </li>
           </ul>
-
           <form @submit.prevent="addComment(earthquake.id)">
+            <input
+              v-model="newComments[earthquake.id].name"
+              class="w-full border border-gray-300 p-2 mb-2"
+              placeholder="Nombre"
+            />
             <textarea
-              v-model="newComment"
+              v-model="newComments[earthquake.id].body"
               class="w-full border border-gray-300 p-2 mb-2"
               placeholder="Agregar comentario"
             ></textarea>
@@ -64,7 +69,7 @@ export default {
       earthquakes: [],
       currentPage: 1,
       totalPages: 1,
-      newComment: "",
+      newComments: {},
     };
   },
   methods: {
@@ -76,7 +81,11 @@ export default {
       this.earthquakes = data.data;
       this.totalPages = data.pagination.total;
       console.log(this.earthquakes);
+      this.earthquakes.forEach((earthquake) => {
+        this.newComments[earthquake.id] = { name: "", body: "" };
+      });
     },
+
     formatDate(dateString) {
       const options = { year: "numeric", month: "long", day: "numeric" };
       return new Date(dateString).toLocaleDateString(undefined, options);
@@ -87,11 +96,16 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ body: this.newComment }),
+        body: JSON.stringify({
+          comment: {
+            body: this.newComments[earthquakeId].body,
+            name: this.newComments[earthquakeId].name,
+          },
+        }),
       });
 
       if (response.ok) {
-        this.newComment = "";
+        this.newComments[earthquakeId] = { name: "", body: "" };
         this.fetchEarthquakes();
       }
     },
