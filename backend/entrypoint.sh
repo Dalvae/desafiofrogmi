@@ -6,7 +6,10 @@ while ! pg_isready -h db -p 5432 > /dev/null 2> /dev/null; do
 done
 
 echo "Connected to PostgreSQL successfully."
-# run a migration
+# Create dB
+bundle exec rake db:create
+echo "Creando la DB"
+# Run migration
 bundle exec rails db:migrate
 echo "Haciendo migracion"
 # Run your Rails task
