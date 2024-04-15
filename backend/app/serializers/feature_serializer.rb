@@ -1,6 +1,6 @@
 # app/serializers/feature_serializer.rb
 class FeatureSerializer < ActiveModel::Serializer
-  attributes :id, :type, :external_id, :magnitude, :place, :time, :tsunami, :mag_type, :title, :coordinates, :url
+  attributes :id, :type, :external_id, :magnitude, :place, :time, :tsunami, :mag_type, :title, :coordinates, :url, :comments
 
   def type
     'feature'
@@ -30,4 +30,6 @@ class FeatureSerializer < ActiveModel::Serializer
   def tsunami
     object.tsunami || false
   end
+
+  has_many :comments
 end
