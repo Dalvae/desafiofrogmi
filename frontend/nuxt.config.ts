@@ -1,16 +1,15 @@
 export default defineNuxtConfig({
   devServer: {
-    port: 8080 // default: 3000
+    port: 8080,
   },
-  vite: {
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://backend:3000/api',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '')
-        }
-      }
-    }
-  }
-})
+  nitro: {
+    devProxy: {
+      "/api": {
+        target: "http://backend:3000/api/",
+        changeOrigin: true,
+      },
+    },
+  },
+
+  ssr: true,
+});

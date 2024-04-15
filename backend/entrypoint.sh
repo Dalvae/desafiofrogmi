@@ -15,5 +15,11 @@ echo "Haciendo migracion"
 # Run your Rails task
 bundle exec rails seismic:fetch_data
 
+# Remove server.pid if it exists
+if [ -f /rails/tmp/pids/server.pid ]; then
+  rm /rails/tmp/pids/server.pid
+fi
+# Then continue with normal startup
+
 # Then start the server
 exec bundle exec rails server -b 0.0.0.0

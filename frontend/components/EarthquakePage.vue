@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <h1 class="text-2xl font-bold mb-4">Terremotos</h1>
+    <h1 class="text-2xl font-bold mb-4">Temblores</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div
@@ -8,16 +8,10 @@
         :key="earthquake.id"
         class="bg-white shadow-md p-4"
       >
-        <h2 class="text-xl font-bold">{{ earthquake.attributes.title }}</h2>
-        <p class="text-gray-600">
-          Magnitud: {{ earthquake.attributes.magnitude }}
-        </p>
-        <p class="text-gray-600">
-          Ubicación: {{ earthquake.attributes.place }}
-        </p>
-        <p class="text-gray-600">
-          Fecha: {{ formatDate(earthquake.attributes.time) }}
-        </p>
+        <h2 class="text-xl font-bold">{{ earthquake.title }}</h2>
+        <p class="text-gray-600">Magnitud: {{ earthquake.magnitude }}</p>
+        <p class="text-gray-600">Ubicación: {{ earthquake.place }}</p>
+        <p class="text-gray-600">Fecha: {{ formatDate(earthquake.time) }}</p>
 
         <div class="mt-4">
           <h3 class="text-lg font-bold">Comentarios:</h3>
@@ -76,12 +70,12 @@ export default {
   methods: {
     async fetchEarthquakes() {
       console.log(`Requesting URL: /api/features?page=${this.currentPage}`);
-      const response = await fetch(`/api/features?page=${this.currentPage}`);
 
+      const response = await fetch(`/api/features?page=${this.currentPage}`);
       const data = await response.json();
       this.earthquakes = data.data;
       this.totalPages = data.pagination.total;
-      console.log(this.earthquake);
+      console.log(this.earthquakes);
     },
     formatDate(dateString) {
       const options = { year: "numeric", month: "long", day: "numeric" };
